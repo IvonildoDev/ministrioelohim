@@ -7,6 +7,18 @@ hamburger.addEventListener('click', () => {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Todo o código de inicialização aqui
+
+    // Inicializar carrossel
+    initCarousel();
+
+    // Inicializar player
+    initMusicPlayer();
+
+    // Outras funções...
+});
+
+function initCarousel() {
     // Configuração do carrossel
     const carousel = document.querySelector('.carousel');
     const items = carousel.querySelectorAll('.carousel-item');
@@ -84,7 +96,196 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Iniciar o carrossel
     startInterval();
-});
+}
+
+function initMusicPlayer() {
+    // Player de Música Personalizado
+    const audio = document.getElementById('background-music');
+    const playBtn = document.getElementById('play-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const muteBtn = document.getElementById('mute-btn');
+    const progressBar = document.querySelector('.progress');
+    const progressContainer = document.querySelector('.progress-bar');
+    const currentTimeEl = document.querySelector('.current-time');
+    const durationEl = document.querySelector('.duration');
+    const volumeBar = document.querySelector('.volume-bar');
+    const volumeSlider = document.querySelector('.volume-slider');
+    const playlistItems = document.querySelectorAll('.playlist-item');
+
+    // Lista de músicas (adicione todas as suas músicas aqui)
+    const songs = [
+        {
+            title: 'Nada Pode Calar o Adorador',
+            artist: 'Jaddyell Sousa',
+            src: '/musicas/jadielnadapodecalaroadorador.mp3',
+            cover: '/img/jaddyell-sousa.png',
+            duration: '3:45'
+        },
+        // Adicione outras músicas aqui seguindo o mesmo formato
+    ];
+
+    let currentSong = 0;
+    let isPlaying = false;
+
+    // Carregar música
+    function loadSong(index) {
+        const song = songs[index];
+        audio.src = song.src;
+        document.querySelector('.song-title').textContent = song.title;
+        document.querySelector('.artist-name').textContent = song.artist;
+        document.querySelector('.album-cover').src = song.cover;
+
+        // Atualizar item ativo na playlist
+        playlistItems.forEach(item => item.classList.remove('active'));
+        if (playlistItems[index]) {
+            playlistItems[index].classList.add('active');
+        }
+
+        // Resetar progresso
+        progressBar.style.width = '0%';
+        currentTimeEl.textContent = '0:00';
+
+        // Pré-carregar o áudio
+        audio.load();
+    }
+
+    // Função para formatar o tempo em minutos:segundos
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    // Funções de controle de reprodução
+    function playAudio() {
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        audio.play().catch(error => {
+            console.error("Erro ao reproduzir áudio:", error);
+            alert("Não foi possível reproduzir o áudio. Verifique se o arquivo existe.");
+        });
+        isPlaying = true;
+    }
+
+    function pauseAudio() {
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+        audio.pause();
+        isPlaying = false;
+    }
+
+    // Atualizar a barra de progresso
+    function updateProgress() {
+        const { duration, currentTime } = audio;
+        if (isNaN(duration)) return;
+
+        const progressPercent = (currentTime / duration) * 100;
+        progressBar.style.width = `${progressPercent}%`;
+
+        currentTimeEl.textContent = formatTime(currentTime);
+    }
+
+    // Definir o progresso ao clicar na barra
+    function setProgress(e) {
+        const width = this.clientWidth;
+        const clickX = e.offsetX;
+        const duration = audio.duration;
+        audio.currentTime = (clickX / width) * duration;
+    }
+
+    // Próxima música
+    function nextSong() {
+        currentSong = (currentSong + 1) % songs.length;
+        loadSong(currentSong);
+        if (isPlaying) {
+            playAudio();
+        }
+    }
+
+    // Música anterior
+    function prevSong() {
+        currentSong = (currentSong - 1 + songs.length) % songs.length;
+        loadSong(currentSong);
+        if (isPlaying) {
+            playAudio();
+        }
+    }
+
+    // Alternar mudo
+    function toggleMute() {
+        if (audio.volume > 0) {
+            audio.dataset.volume = audio.volume;
+            audio.volume = 0;
+            volumeBar.style.width = '0%';
+            muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        } else {
+            audio.volume = audio.dataset.volume || 1;
+            volumeBar.style.width = `${audio.volume * 100}%`;
+            muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+        }
+    }
+
+    // Atualizar volume
+    function updateVolume(e) {
+        const width = volumeSlider.clientWidth;
+        const clickX = e.offsetX;
+        const volume = clickX / width;
+
+        audio.volume = volume;
+        volumeBar.style.width = `${volume * 100}%`;
+
+        // Atualizar ícone de volume
+        if (volume === 0) {
+            muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        } else if (volume < 0.5) {
+            muteBtn.innerHTML = '<i class="fas fa-volume-down"></i>';
+        } else {
+            muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+        }
+    }
+
+    // Event Listeners
+    playBtn.addEventListener('click', () => {
+        isPlaying ? pauseAudio() : playAudio();
+    });
+
+    prevBtn.addEventListener('click', prevSong);
+    nextBtn.addEventListener('click', nextSong);
+
+    audio.addEventListener('timeupdate', updateProgress);
+    audio.addEventListener('ended', nextSong);
+
+    // Inicialização
+    loadSong(0);
+
+    // Adicione isso para debug
+    audio.addEventListener('error', function (e) {
+        console.error('Erro ao carregar áudio:', e);
+        alert('Erro ao carregar o arquivo de áudio! Verifique se o arquivo existe em: ' + audio.src);
+    });
+
+    progressContainer.addEventListener('click', setProgress);
+
+    volumeSlider.addEventListener('click', updateVolume);
+    muteBtn.addEventListener('click', toggleMute);
+
+    // Iniciar reprodução ao clicar em itens da playlist
+    playlistItems.forEach((item, index) => {
+        item.addEventListener('click', () => {
+            currentSong = index;
+            loadSong(currentSong);
+            playAudio();
+        });
+    });
+
+    // Carregar a primeira música
+    loadSong(0);
+
+    // Verificar erro no carregamento do áudio
+    audio.addEventListener('error', function () {
+        console.error('Erro ao carregar o arquivo de áudio. Verifique o caminho:', audio.src);
+        alert('Não foi possível carregar o arquivo de áudio. Verifique se o arquivo existe no caminho especificado.');
+    });
+}
 
 // Formulário de Contato com localStorage
 const contactForm = document.getElementById('contact-form');
