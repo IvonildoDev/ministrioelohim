@@ -126,7 +126,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const pago = form.pago.checked;
         let valorPago = 0;
         if (pago) valorPago = valorMensal;
-        contribuintes.push({ nome, finalidade, valorMensal, valorTotal, valorPago, dataPagamento });
+        // Verifica se o contribuinte já existe
+        const idxExistente = contribuintes.findIndex(c => c.nome.toLowerCase() === nome.toLowerCase());
+        if (idxExistente !== -1) {
+            // Atualiza o valorPago somando o novo valor
+            contribuintes[idxExistente].valorPago += valorPago;
+            // Atualiza a data do último pagamento e finalidade, se desejar
+            contribuintes[idxExistente].dataPagamento = dataPagamento;
+            contribuintes[idxExistente].finalidade = finalidade;
+        } else {
+            contribuintes.push({ nome, finalidade, valorMensal, valorTotal, valorPago, dataPagamento });
+        }
 
         localStorage.setItem('contribuintes', JSON.stringify(contribuintes));
         atualizarCards();
