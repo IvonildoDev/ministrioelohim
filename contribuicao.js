@@ -174,21 +174,7 @@ document.addEventListener('DOMContentLoaded', function () {
         doc.save('contribuintes.pdf');
     });
 
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const nome = form.nome.value;
-        const finalidade = form.finalidade.value;
-        const valorMensal = parseFloat(form.valorMensal.value);
-        const valorTotal = parseFloat(form.valorTotal.value);
-        const dataPagamento = form.dataPagamento.value;
-        const valorPago = valorMensal; // Considera o valor mensal como pago no mês do cadastro
-        contribuintes.push({ nome, finalidade, valorMensal, valorTotal, valorPago, dataPagamento });
-        localStorage.setItem('contribuintes', JSON.stringify(contribuintes));
-        atualizarCards();
-        form.reset();
-    });
 
-    atualizarCards();
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
