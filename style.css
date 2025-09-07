@@ -1,3 +1,272 @@
+/* Cards de Contribuintes */
+#cards-contribuintes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+.card-contribuinte {
+    background: #fffbe7;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 1.2rem 1.1rem 1rem 1.1rem;
+    min-width: 260px;
+    max-width: 340px;
+    flex: 1 1 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: 1px solid #ffe082;
+    position: relative;
+}
+.card-contribuinte .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+.card-contribuinte .card-nome {
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+}
+.card-contribuinte .status {
+    margin-left: 0.5em;
+}
+.card-contribuinte .card-body div {
+    font-size: 0.98rem;
+    color: #444;
+    margin-bottom: 0.1em;
+}
+.card-contribuinte .card-body b {
+    color: #222;
+}
+@media (max-width: 700px) {
+    #cards-contribuintes {
+        flex-direction: column;
+        gap: 0.7rem;
+        align-items: center;
+    }
+    .card-contribuinte {
+        min-width: 90vw;
+        max-width: 98vw;
+        padding: 1rem 0.5rem 0.8rem 0.5rem;
+    }
+}
+/* ========================= */
+/* Estilos para Contribuição */
+/* ========================= */
+
+.contribuicao-container {
+    max-width: 700px;
+    margin: 90px auto 40px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    padding: 2rem 2.5rem 2.5rem 2.5rem;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1.2rem;
+}
+
+#contribuicao-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2%;
+    background: #f7f7f7;
+    border-radius: 8px;
+    padding: 1.5rem 1rem 1rem 1rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+#contribuicao-form label {
+    flex: 1 1 100%;
+    font-weight: 600;
+    color: #444;
+    margin-top: 0.5rem;
+}
+
+#contribuicao-form input {
+    flex: 1 1 48%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+#contribuicao-form button {
+    flex: 1 1 100%;
+    background: #f8bf2c;
+    color: #222;
+    border: none;
+    border-radius: 5px;
+    padding: 0.7rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background 0.2s;
+}
+
+#contribuicao-form button:hover {
+    background: #e0a800;
+}
+
+
+#tabela-contribuintes {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 2rem;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 1.05rem;
+    table-layout: auto;
+    margin-top: 1rem;
+}
+
+
+#tabela-contribuintes th, #tabela-contribuintes td {
+    padding: 0.85rem 0.5rem;
+    border-bottom: 1px solid #f3e6c2;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 1.05rem;
+    transition: background 0.2s;
+}
+
+
+#tabela-contribuintes th {
+    background: linear-gradient(90deg, #ffe082 0%, #f8bf2c 100%);
+    color: #222;
+    font-weight: bold;
+    border-top: none;
+    border-bottom: 2px solid #f8bf2c;
+    letter-spacing: 0.5px;
+}
+
+
+#tabela-contribuintes tr:last-child td {
+    border-bottom: none;
+}
+
+#tabela-contribuintes tbody tr:nth-child(even) {
+    background: #fffbe7;
+}
+
+#tabela-contribuintes tbody tr:hover {
+    background: #fff3c0;
+    transition: background 0.2s;
+}
+
+
+#tabela-contribuintes td {
+    color: #444;
+    border-right: 1px solid #f3e6c2;
+}
+#tabela-contribuintes td:last-child {
+    border-right: none;
+}
+
+
+#tabela-contribuintes td.status {
+    font-weight: bold;
+    padding: 0.7rem 0.2rem;
+}
+
+#tabela-contribuintes .badge-status {
+    display: inline-block;
+    padding: 0.3em 0.9em;
+    border-radius: 16px;
+    font-size: 0.98em;
+    font-weight: 700;
+    color: #fff;
+    background: #43a047;
+    box-shadow: 0 1px 4px rgba(67,160,71,0.08);
+    letter-spacing: 0.5px;
+}
+#tabela-contribuintes .badge-status.atrasado {
+    background: #d32f2f;
+    color: #fff;
+}
+#tabela-contribuintes .badge-status.adiantado {
+    background: #1976d2;
+    color: #fff;
+}
+
+
+/* Remove cor antiga, agora usamos badge */
+
+a[href="index.html"] {
+    display: inline-block;
+    margin: 0 auto 0 0;
+    background: #333;
+    color: #fff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+a[href="index.html"]:hover {
+    background: #222;
+}
+
+
+@media (max-width: 900px) {
+    .contribuicao-container {
+        padding: 1rem 0.5rem;
+    }
+    #contribuicao-form input {
+        flex: 1 1 100%;
+    }
+    #contribuicao-form {
+        gap: 0.5rem 0;
+    }
+}
+
+@media (max-width: 700px) {
+    .contribuicao-container {
+        padding: 0.5rem 0.1rem;
+    }
+    #tabela-contribuintes {
+        font-size: 0.92rem;
+        margin-top: 0.5rem;
+        overflow-x: auto;
+        display: block;
+        width: 100%;
+    }
+    #tabela-contribuintes thead, #tabela-contribuintes tbody, #tabela-contribuintes tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+    #tabela-contribuintes th, #tabela-contribuintes td {
+        font-size: 0.91rem;
+        padding: 0.45rem 0.1rem;
+        word-break: break-word;
+    }
+    #tabela-contribuintes .badge-status {
+        font-size: 0.80em;
+        padding: 0.15em 0.5em;
+    }
+    /* Scroll horizontal para tabela */
+    .contribuicao-container {
+        overflow-x: auto;
+    }
+}
 * {
     margin: 0;
     padding: 0;

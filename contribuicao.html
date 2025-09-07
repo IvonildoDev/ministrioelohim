@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contribuição</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Menu de Navegação -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="/img/logo-elohim.png" alt="Logo Ministério Elohim" class="logo-img">
+                <span class="logo-text">Ministério Elohim</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html#home"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="index.html#historia"><i class="fas fa-book"></i> Nossa História</a></li>
+                <li><a href="index.html#agenda"><i class="fas fa-calendar-alt"></i> Agenda</a></li>
+                <li><a href="index.html#galeria"><i class="fas fa-images"></i> Galeria</a></li>
+                <li><a href="index.html#contato"><i class="fas fa-envelope"></i> Contato</a></li>
+                <li><a href="contribuicao.html"><i class="fas fa-hand-holding-heart"></i> Contribuição</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+    <div class="contribuicao-container">
+        <h1><i class="fas fa-hand-holding-heart" style="color:#f8bf2c;"></i> Contribuição</h1>
+        <form id="contribuicao-form">
+            <label for="nome">Nome do Contribuinte:</label>
+            <input type="text" id="nome" name="nome" required>
+            <label for="finalidade">Finalidade:</label>
+            <input type="text" id="finalidade" name="finalidade" required>
+            <label for="valorMensal">Valor Mensal:</label>
+            <input type="number" id="valorMensal" name="valorMensal" required>
+            <label for="valorTotal">Valor Total:</label>
+            <input type="number" id="valorTotal" name="valorTotal" required>
+            <label for="dataPagamento">Data do Pagamento:</label>
+            <input type="date" id="dataPagamento" name="dataPagamento" required>
+            <button type="submit"><i class="fas fa-plus-circle"></i> Adicionar Contribuição</button>
+        </form>
+        <h2>Lista de Contribuintes</h2>
+        <button id="btn-pdf"
+            style="margin-bottom:1.2rem; background:#1976d2; color:#fff; border:none; border-radius:5px; padding:0.6rem 1.2rem; font-size:1rem; font-weight:600; cursor:pointer;"><i
+                class="fas fa-file-pdf"></i> Exportar PDF</button>
+        <div id="cards-contribuintes"></div>
+        <a href="index.html">Voltar</a>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+    <script src="contribuicao.js"></script>
+</body>
+
+</html>

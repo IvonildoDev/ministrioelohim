@@ -1,19 +1,88 @@
-// Menu Mobile
-const hamburger = document.querySelector('.hamburger');
-const navLinks = document.querySelector('.nav-links');
 
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-});
-
+// Menu Mobile seguro e inicialização de recursos
 document.addEventListener('DOMContentLoaded', function () {
-    // Todo o código de inicialização aqui
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
 
-    // Inicializar carrossel
-    initCarousel();
+    // Inicializar carrossel se existir na página
+    if (typeof initCarousel === 'function' && document.querySelector('.carousel')) {
+        initCarousel();
+    }
 
-    // Inicializar player
-    initMusicPlayer();
+    // Inicializar player se existir na página
+    if (typeof initMusicPlayer === 'function' && document.querySelector('#player')) {
+        initMusicPlayer();
+    }
+
+    // Formulário de Contato com localStorage
+    const contactForm = document.getElementById('contact-form');
+    const mensagensSalvasDiv = document.getElementById('mensagens-salvas');
+
+    if (contactForm && mensagensSalvasDiv) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const mensagem = document.getElementById('mensagem').value;
+
+            const mensagemObj = { nome, email, mensagem, data: new Date().toLocaleString() };
+
+            // Recuperar mensagens existentes ou criar novo array
+            let mensagens = JSON.parse(localStorage.getItem('mensagens')) || [];
+            mensagens.push(mensagemObj);
+            localStorage.setItem('mensagens', JSON.stringify(mensagens));
+
+            // Exibir mensagem de sucesso
+            alert('Mensagem enviada com sucesso!');
+
+            // Limpar formulário
+            contactForm.reset();
+
+            // Atualizar lista de mensagens salvas
+            exibirMensagens();
+        });
+
+        // Exibir mensagens salvas
+        function exibirMensagens() {
+            const mensagens = JSON.parse(localStorage.getItem('mensagens')) || [];
+            mensagensSalvasDiv.innerHTML = '<h3>Mensagens Enviadas</h3>';
+
+            if (mensagens.length === 0) {
+                mensagensSalvasDiv.innerHTML += '<p>Nenhuma mensagem salva.</p>';
+                return;
+            }
+
+            mensagens.forEach((msg, index) => {
+                mensagensSalvasDiv.innerHTML += `
+                <div>
+                    <p><strong>Nome:</strong> ${msg.nome}</p>
+                    <p><strong>E-mail:</strong> ${msg.email}</p>
+                    <p><strong>Mensagem:</strong> ${msg.mensagem}</p>
+                    <p><strong>Data:</strong> ${msg.data}</p>
+                    <button onclick="deletarMensagem(${index})">Deletar</button>
+                    <hr>
+                </div>
+            `;
+            });
+        }
+
+        // Deletar mensagem
+        window.deletarMensagem = function (index) {
+            let mensagens = JSON.parse(localStorage.getItem('mensagens')) || [];
+            mensagens.splice(index, 1);
+            localStorage.setItem('mensagens', JSON.stringify(mensagens));
+            exibirMensagens();
+        }
+
+        // Carregar mensagens ao iniciar
+        exibirMensagens();
+    }
 
     // Outras funções...
 });
