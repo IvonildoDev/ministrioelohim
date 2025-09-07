@@ -5,8 +5,40 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('contribuicao-form');
     const cardsContainer = document.getElementById('cards-contribuintes');
-    const btnPdf = document.getElementById('btn-pdf');
+    // const btnPdf = document.getElementById('btn-pdf');
     let contribuintes = JSON.parse(localStorage.getItem('contribuintes')) || [];
+    const btnWhatsapp = document.getElementById('btn-whatsapp');
+    // Compartilhar WhatsApp
+    if (btnWhatsapp) {
+        btnWhatsapp.addEventListener('click', function () {
+            if (!contribuintes.length) {
+                alert('Nenhum contribuinte cadastrado para compartilhar.');
+                return;
+            }
+            let texto = '*Relatório de Contribuintes*%0A';
+            texto += `Gerado em: ${formatarDataBR(new Date())}%0A%0A`;
+            let totalPago = 0;
+            contribuintes.forEach((c, idx) => {
+                const hoje = new Date();
+                const valorRestante = c.valorTotal - c.valorPago;
+                const dataPag = new Date(c.dataPagamento);
+                let status = 'Em dia';
+                if (dataPag < hoje && valorRestante > 0) status = 'Atrasado';
+                totalPago += Number(c.valorPago);
+                texto += `🟩 *${c.nome}*%0A`;
+                texto += `• Finalidade: ${c.finalidade}%0A`;
+                texto += `• Pago: R$ ${Number(c.valorPago).toFixed(2)}%0A`;
+                texto += `• Restante: R$ ${valorRestante.toFixed(2)}%0A`;
+                texto += `• Data: ${formatarDataBR(c.dataPagamento)}%0A`;
+                texto += '------------------------------%0A';
+            });
+            texto += `%0A*Resumo Geral*%0A`;
+            texto += `Total Pago: R$ ${totalPago.toFixed(2)}%0A`;
+            texto += '%0AEnviado pelo sistema Ministério Elohim';
+            const url = `https://wa.me/?text=${texto}`;
+            window.open(url, '_blank');
+        });
+    }
 
     function formatarDataBR(dataStr) {
         if (!dataStr) return '';
@@ -72,123 +104,36 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // PDF EXPORTAÇÃO
-    btnPdf.addEventListener('click', function () {
-        if (typeof window.jspdf === 'undefined' && typeof window.jsPDF === 'undefined') {
-            alert('Para exportar PDF, inclua a biblioteca jsPDF no HTML.');
-            return;
-        }
-        const doc = new (window.jspdf ? window.jspdf.jsPDF : window.jsPDF)();
-        // Cabeçalho
-        doc.setFontSize(18);
-        doc.setTextColor(40, 40, 40);
-        doc.text('Relatório de Contribuintes', 105, 18, { align: 'center' });
-        doc.setFontSize(11);
-        doc.setTextColor(100, 100, 100);
-        doc.text(`Gerado em: ${formatarDataBR(new Date())}`, 200, 12, { align: 'right' });
-
-        // Tabela
-        let y = 30;
-        doc.setFontSize(12);
-        doc.setTextColor(0, 0, 0);
-        // Cabeçalho da tabela
-        doc.setFillColor(248, 191, 44);
-        doc.rect(10, y, 245, 9, 'F'); // largura aumentada para cobrir todas as colunas
-        doc.setTextColor(40, 40, 40);
-        // Definir espaçamentos maiores entre colunas
-        const col = {
-            nome: 14,
-            finalidade: 54,
-            mensal: 94,
-            total: 124,
-            pago: 154,
-            restante: 184,
-            data: 214,
-            status: 244
-        };
-        doc.text('Nome', col.nome, y + 6);
-        doc.text('Finalidade', col.finalidade, y + 6);
-        doc.text('Mensal', col.mensal, y + 6);
-        doc.text('Total', col.total, y + 6);
-        doc.text('Pago', col.pago, y + 6);
-        doc.text('Restante', col.restante, y + 6);
-        doc.text('Data', col.data, y + 6);
-        doc.text('Status', col.status, y + 6);
-        y += 11;
-        contribuintes.forEach((c, idx) => {
-            if (y > 270) {
-                doc.addPage();
-                y = 20;
-                doc.setFontSize(12);
-                doc.setFillColor(248, 191, 44);
-                doc.rect(10, y, 245, 9, 'F'); // largura aumentada para cobrir todas as colunas
-                doc.setTextColor(40, 40, 40);
-                doc.text('Nome', col.nome, y + 6);
-                doc.text('Finalidade', col.finalidade, y + 6);
-                doc.text('Mensal', col.mensal, y + 6);
-                doc.text('Total', col.total, y + 6);
-                doc.text('Pago', col.pago, y + 6);
-                doc.text('Restante', col.restante, y + 6);
-                doc.text('Data', col.data, y + 6);
-                doc.text('Status', col.status, y + 6);
-                y += 11;
-            }
-            const hoje = new Date();
-            const valorRestante = c.valorTotal - c.valorPago;
-            const dataPag = new Date(c.dataPagamento);
-            let status = 'Em dia';
-            let statusColor = [67, 160, 71];
-            if (dataPag < hoje && valorRestante > 0) {
-                status = 'Atrasado';
-                statusColor = [211, 47, 47];
-            }
-            // Linhas alternadas
-            if (idx % 2 === 0) {
-                doc.setFillColor(255, 251, 231);
-                doc.rect(10, y - 1, 190, 9, 'F');
-            }
-            doc.setTextColor(40, 40, 40);
-            doc.text(String(c.nome), col.nome, y + 6);
-            doc.text(String(c.finalidade), col.finalidade, y + 6);
-            doc.text(`R$ ${Number(c.valorMensal).toFixed(2)}`, col.mensal, y + 6);
-            doc.text(`R$ ${Number(c.valorTotal).toFixed(2)}`, col.total, y + 6);
-            doc.text(`R$ ${Number(c.valorPago).toFixed(2)}`, col.pago, y + 6);
-            // Valor restante colorido
-            if (valorRestante > 0) {
-                doc.setTextColor(211, 47, 47);
-            } else {
-                doc.setTextColor(67, 160, 71);
-            }
-            doc.text(`R$ ${valorRestante.toFixed(2)}`, col.restante, y + 6);
-            doc.setTextColor(40, 40, 40);
-            doc.text(formatarDataBR(c.dataPagamento), col.data, y + 6);
-            // Status badge
-            doc.setTextColor(...statusColor);
-            doc.text(status, col.status, y + 6);
-            y += 10;
-        });
-        // Rodapé
-        doc.setFontSize(10);
-        doc.setTextColor(120, 120, 120);
-        doc.text('Relatório gerado pelo sistema Ministério Elohim', 105, 290, { align: 'center' });
-        doc.save('contribuintes.pdf');
-    });
+    // PDF EXPORTAÇÃO removido
 
 
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-        const nome = form.nome.value;
+        let nome = form.nome.value;
+        if (nome === 'Outro') {
+            nome = form['nome-outro'].value.trim();
+            if (!nome) {
+                alert('Digite o nome do contribuinte!');
+                form['nome-outro'].focus();
+                return;
+            }
+        }
         const finalidade = form.finalidade.value;
-        const valorMensal = parseFloat(form.valorMensal.value);
-        const valorTotal = parseFloat(form.valorTotal.value);
+        const valorMensal = 12;
+        const valorTotal = 120;
         const dataPagamento = form.dataPagamento.value;
-        const valorPago = valorMensal; // Considera o valor mensal como pago no mês do cadastro
+        const pago = form.pago.checked;
+        let valorPago = 0;
+        if (pago) valorPago = valorMensal;
         contribuintes.push({ nome, finalidade, valorMensal, valorTotal, valorPago, dataPagamento });
 
         localStorage.setItem('contribuintes', JSON.stringify(contribuintes));
         atualizarCards();
         form.reset();
+        // Garantir que checkbox e campo nome-outro sejam resetados visualmente
+        form.pago.checked = false;
+        document.getElementById('nome-outro').style.display = 'none';
     });
 
     atualizarCards();

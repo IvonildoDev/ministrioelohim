@@ -35,24 +35,53 @@
     <div class="contribuicao-container">
         <h1><i class="fas fa-hand-holding-heart" style="color:#f8bf2c;"></i> Contribuição</h1>
         <form id="contribuicao-form">
-            <label for="nome">Nome do Contribuinte:</label>
-            <input type="text" id="nome" name="nome" required>
+            <label for="nome">Selecione Um Contribuinte:</label>
+            <select id="nome" name="nome" required
+                onchange="document.getElementById('nome-outro').style.display = this.value === 'Outro' ? 'block' : 'none';">
+                <option value="">Selecione...</option>
+                <option value="Eronildo">Eronildo</option>
+                <option value="Marcela">Marcela</option>
+                <option value="Vanio">Vanio</option>
+                <option value="Jonatas">Jonatas</option>
+                <option value="Jarbeson">Jarbeson</option>
+                <option value="Lucas">Lucas</option>
+                <option value="Luiz Fernando">Luiz Fernando</option>
+                <option value="Samuel">Samuel</option>
+                <option value="Vitor">Vitor</option>
+                <option value="Beno">Beno</option>
+                <option value="Outro">Outro</option>
+            </select>
+            <input type="text" id="nome-outro" name="nome-outro" placeholder="Digite o nome"
+                style="display:none; margin-top:0.5em;" autocomplete="off">
             <label for="finalidade">Finalidade:</label>
-            <input type="text" id="finalidade" name="finalidade" required>
+            <input type="text" id="finalidade" name="finalidade" value="compra do alto falante" readonly
+                style="background:#f7f7f7; border:1px solid #ccc; border-radius:5px; text-align:center; font-weight:bold;">
             <label for="valorMensal">Valor Mensal:</label>
-            <input type="number" id="valorMensal" name="valorMensal" required>
+            <div style="display:flex;align-items:center;gap:1em;">
+                <input type="text" id="valorMensal" name="valorMensal" value="12" readonly
+                    style="width:60px; background:#f7f7f7; border:1px solid #ccc; border-radius:5px; text-align:center; font-weight:bold;">
+                <label style="display:flex;align-items:center;gap:0.3em;font-weight:normal;">
+                    <input type="checkbox" id="pago" name="pago" style="width:18px;height:18px;"> Pago
+                </label>
+            </div>
             <label for="valorTotal">Valor Total:</label>
-            <input type="number" id="valorTotal" name="valorTotal" required>
+            <input type="text" id="valorTotal" name="valorTotal" value="120" readonly
+                style="width:80px; background:#f7f7f7; border:1px solid #ccc; border-radius:5px; text-align:center; font-weight:bold;">
             <label for="dataPagamento">Data do Pagamento:</label>
             <input type="date" id="dataPagamento" name="dataPagamento" required>
             <button type="submit"><i class="fas fa-plus-circle"></i> Adicionar Contribuição</button>
         </form>
         <h2>Lista de Contribuintes</h2>
-        <button id="btn-pdf"
-            style="margin-bottom:1.2rem; background:#1976d2; color:#fff; border:none; border-radius:5px; padding:0.6rem 1.2rem; font-size:1rem; font-weight:600; cursor:pointer;"><i
-                class="fas fa-file-pdf"></i> Exportar PDF</button>
+        <!-- Botões movidos para baixo -->
         <div id="cards-contribuintes"></div>
-        <a href="index.html">Voltar</a>
+        <div style="display:flex;gap:1em;align-items:center;margin-top:2rem;">
+            <a href="index.html"
+                style="background:#eee; color:#333; border:none; border-radius:5px; padding:0.6rem 1.2rem; font-size:1rem; font-weight:600; text-decoration:none; display:inline-block;">Voltar</a>
+            <!-- Botão PDF removido -->
+            <button id="btn-whatsapp"
+                style="background:#25d366; color:#fff; border:none; border-radius:5px; padding:0.6rem 1.2rem; font-size:1rem; font-weight:600; cursor:pointer;display:flex;align-items:center;gap:0.5em;"><i
+                    class="fab fa-whatsapp"></i> Compartilhar</button>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="script.js"></script>

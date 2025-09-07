@@ -1,3 +1,59 @@
+/* Checkbox customizado para pago/não pago */
+#contribuicao-form input[type="checkbox"] {
+    accent-color: #43a047;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border: 2px solid #f8bf2c;
+    margin-right: 0.4em;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+}
+#contribuicao-form input[type="checkbox"]:focus {
+    outline: 2px solid #1976d2;
+    box-shadow: 0 0 0 2px #f8bf2c33;
+}
+#contribuicao-form label[for="pago"] {
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+    margin-bottom: 0.2em;
+}
+/* Seletor de nomes do contribuinte */
+#contribuicao-form select#nome {
+    flex: 1 1 48%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    background: #fffbe7;
+    color: #333;
+    transition: border 0.2s;
+}
+#contribuicao-form select#nome:focus {
+    border-color: #f8bf2c;
+    outline: none;
+}
+
+#contribuicao-form input#nome-outro {
+    flex: 1 1 100%;
+    padding: 0.5rem;
+    border: 1.5px solid #f8bf2c;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    background: #fffde7;
+    color: #333;
+    box-shadow: 0 1px 4px rgba(248,191,44,0.08);
+    transition: border 0.2s;
+}
+#contribuicao-form input#nome-outro:focus {
+    border-color: #1976d2;
+    outline: none;
+}
 /* Cards de Contribuintes */
 #cards-contribuintes {
     display: flex;

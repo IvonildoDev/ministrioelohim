@@ -360,32 +360,34 @@ function initMusicPlayer() {
 const contactForm = document.getElementById('contact-form');
 const mensagensSalvasDiv = document.getElementById('mensagens-salvas');
 
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-    const nome = document.getElementById('nome').value;
-    const email = document.getElementById('email').value;
-    const mensagem = document.getElementById('mensagem').value;
+        const nome = document.getElementById('nome').value;
+        const email = document.getElementById('email').value;
+        const mensagem = document.getElementById('mensagem').value;
 
-    const mensagemObj = { nome, email, mensagem, data: new Date().toLocaleString() };
+        const mensagemObj = { nome, email, mensagem, data: new Date().toLocaleString() };
+        // Recuperar mensagens existentes ou criar novo array
+        let mensagens = JSON.parse(localStorage.getItem('mensagens')) || [];
+        mensagens.push(mensagemObj);
+        localStorage.setItem('mensagens', JSON.stringify(mensagens));
 
-    // Recuperar mensagens existentes ou criar novo array
-    let mensagens = JSON.parse(localStorage.getItem('mensagens')) || [];
-    mensagens.push(mensagemObj);
-    localStorage.setItem('mensagens', JSON.stringify(mensagens));
+        // Exibir mensagem de sucesso
+        alert('Mensagem enviada com sucesso!');
 
-    // Exibir mensagem de sucesso
-    alert('Mensagem enviada com sucesso!');
+        // Limpar formulário
+        contactForm.reset();
 
-    // Limpar formulário
-    contactForm.reset();
-
-    // Atualizar lista de mensagens salvas
-    exibirMensagens();
-});
+        // Atualizar lista de mensagens salvas
+        exibirMensagens();
+    });
+}
 
 // Exibir mensagens salvas
 function exibirMensagens() {
+    if (!window.mensagensSalvasDiv) return;
     const mensagens = JSON.parse(localStorage.getItem('mensagens')) || [];
     mensagensSalvasDiv.innerHTML = '<h3>Mensagens Enviadas</h3>';
 
